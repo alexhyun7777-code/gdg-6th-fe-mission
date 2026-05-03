@@ -1,0 +1,137 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #eef3f8, #ffffff);
+  color: #172033;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  width: 86%;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #ffffff;
+  text-align: center;
+  border-left: 1px solid #d9e0ea;
+  border-right: 1px solid #d9e0ea;
+  box-shadow: 0 10px 30px rgba(20, 40, 70, 0.08);
+}
+
+.navbar {
+  padding: 54px 20px 34px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.top-logo {
+  width: 82px;
+  margin-bottom: 14px;
+}
+
+.navbar h1 {
+  margin: 0 0 24px;
+  font-size: 42px;
+  font-weight: 800;
+  color: #172033;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+button {
+  cursor: pointer;
+  padding: 12px 22px;
+  border: 1px solid #d1d9e6;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #172033;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #f4f7fb;
+}
+
+.admin-button {
+  padding: 10px 28px;
+}
+
+.content {
+  padding: 34px 20px 42px;
+}
+
+.logo {
+  width: 74px;
+  margin-bottom: 26px;
+}
+
+.search-area {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+
+.search-area input {
+  width: 360px;
+  padding: 15px 18px;
+  border: 1px solid #b9c3d1;
+  border-radius: 10px 0 0 10px;
+  font-size: 16px;
+}
+
+.search-area button {
+  border-radius: 0 10px 10px 0;
+  background: #172033;
+  color: white;
+  border-color: #172033;
+}
+
+.empty-box {
+  margin: 0 auto 34px;
+  color: #6b7280;
+}
+
+.empty-icon {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #f0f4f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+}
+
+.result-text {
+  margin: 0 0 8px;
+  color: #172033;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.empty-box span {
+  font-size: 16px;
+}
+
+.footer {
+  width: 86%;
+  margin: 0 auto;
+  padding-bottom: 48px;
+}
+
+.footer button {
+  width: 100%;
+  padding: 18px;
+  border-radius: 10px;
+  background: #172033;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+}
