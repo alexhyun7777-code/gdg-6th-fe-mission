@@ -1,16 +1,34 @@
-function Navbar() {
-  return (
-    <nav className="navbar">
-      <img className="top-logo" src="/gdg-logo.svg" alt="GDG logo" />
-      <h1>현님이 만든 GDG 쇼핑몰^^</h1>
+import { Link, NavLink } from "react-router";
 
-      <div className="nav-buttons">
-        <button>카테고리 필터링</button>
-        <button>가격 범위 필터링</button>
-        <button>상품 정렬</button>
+function Navbar() {
+  const navClass = ({ isActive }) =>
+    isActive
+      ? "font-bold text-blue-500"
+      : "text-gray-500 hover:text-blue-500";
+
+  return (
+    <nav className="flex items-center justify-between border-b border-gray-300 bg-white px-12 py-6">
+      <Link to="/">
+        <img className="w-20" src="/gdg-logo.svg" alt="GDG logo" />
+      </Link>
+
+      <div className="flex gap-10 text-lg">
+        <NavLink to="/category" className={navClass}>
+          카테고리 필터링
+        </NavLink>
+
+        <NavLink to="/price" className={navClass}>
+          가격 범위 필터링
+        </NavLink>
+
+        <NavLink to="/sort" className={navClass}>
+          상품 정렬
+        </NavLink>
       </div>
 
-      <button className="admin-button">관리자</button>
+      <button className="rounded-xl border border-blue-300 px-8 py-4 text-lg text-gray-900 hover:bg-blue-50">
+        관리자
+      </button>
     </nav>
   );
 }
