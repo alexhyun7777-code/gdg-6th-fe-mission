@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router";
 import { useState } from "react";
 import ProductItem from "./ProductItem";
+import Navbar from "./Navbar";
 
 function ProductListPage({ type, items }) {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -57,27 +58,7 @@ function ProductListPage({ type, items }) {
 
   return (
     <div className="min-h-screen bg-white px-12 py-8">
-      <header className="flex items-center justify-between border-b border-gray-400 pb-6">
-        <Link to="/">
-          <img src="/gdg-logo.svg" alt="GDG logo" className="w-20" />
-        </Link>
-
-        <nav className="flex gap-10 text-lg">
-          <NavLink to="/category" className={navClass}>
-            카테고리 필터링
-          </NavLink>
-          <NavLink to="/price" className={navClass}>
-            가격 범위 필터링
-          </NavLink>
-          <NavLink to="/sort" className={navClass}>
-            상품 정렬
-          </NavLink>
-        </nav>
-
-        <button className="rounded-xl border border-blue-300 px-8 py-4 text-lg text-gray-900">
-          관리자
-        </button>
-      </header>
+      <Navbar />
 
       <main className="mx-auto mt-24 max-w-5xl">
         <h1 className="mb-16 text-center text-6xl font-bold text-blue-500">
