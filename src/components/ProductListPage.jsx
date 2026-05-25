@@ -1,21 +1,44 @@
-import { Link, NavLink } from "react-router";
 import { useState } from "react";
 import ProductItem from "./ProductItem";
 import Navbar from "./Navbar";
 
-function ProductListPage({ type, items }) {
+const BASE_URL = "http://192.168.166.239:8080";
+
+function ProductListPage({ type, items = [] }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [lowPrice, setLowPrice] = useState(100);
-  const [highPrice, setHighPrice] = useState(10000);
+  const [highPrice, setHighPrice] = useState(100000);
   const [sortType, setSortType] = useState("");
 
-  const navClass = ({ isActive }) =>
-    isActive
-      ? "font-bold text-blue-500"
-      : "text-gray-500 hover:text-blue-500";
+  const [searchName, setSearchName] = useState("");
+  const [backendItems, setBackendItems] = useState([]);
 
   let title = "";
-  let filteredItems = [...items];
+  let filteredItems = backendItems.length > 0 ? [...backendItems] : [...items];
+
+  const handleSearch = async () => {
+    if (!searchName.trim()) return;
+
+    const response = await fetch(
+      `${BASE_URL}/products?name=${encodeURIComponent(searchName)}`
+    );
+
+    console.log("응답 상태:", response.status);
+
+    const data = await response.json();
+    console.log("백엔드 검색 결과:", data);
+
+    const convertedItem = {
+      id: data.id,
+      itemName: data.name,
+      name: data.name,
+      price: data.price,
+      stockQuantity: data.stockQuantity,
+      category: "식품",
+    };
+
+    setBackendItems([convertedItem]);
+  };
 
   if (type === "category") {
     title = "카테고리 필터링";
@@ -39,22 +62,15 @@ function ProductListPage({ type, items }) {
     title = "상품 정렬";
 
     if (sortType === "name") {
-      filteredItems.sort((a, b) => a.itemName.localeCompare(b.itemName));
+      filteredItems.sort((a, b) =>
+        (a.itemName || a.name).localeCompare(b.itemName || b.name)
+      );
     }
 
     if (sortType === "price") {
       filteredItems.sort((a, b) => a.price - b.price);
     }
   }
-
-  const handleCategoryChange = (e) => {
-    const value = e.target.value;
-    setSelectedCategory(value);
-
-    if (value) {
-      console.log(`${value} 카테고리 클릭`);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white px-12 py-8">
@@ -65,10 +81,29 @@ function ProductListPage({ type, items }) {
           {title}
         </h1>
 
+        <div className="mb-16 flex justify-center">
+          <input
+            type="text"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            placeholder="상품 검색..."
+            className="w-96 rounded-l-lg border border-gray-300 px-5 py-4 text-lg"
+          />
+          <button
+            onClick={() => {
+              console.log("검색 버튼 클릭됨");
+              handleSearch();
+            }}
+            className="rounded-r-lg bg-gray-900 px-8 py-4 font-bold text-white"
+          >
+            검색
+          </button>
+        </div>
+
         {type === "category" && (
           <select
             value={selectedCategory}
-            onChange={handleCategoryChange}
+            onChange={(e) => setSelectedCategory(e.target.value)}
             className="mx-auto mb-16 block w-72 rounded-lg border border-gray-400 px-5 py-4 text-lg"
           >
             <option value="">카테고리 선택</option>
@@ -93,9 +128,6 @@ function ProductListPage({ type, items }) {
               onChange={(e) => setHighPrice(e.target.value)}
               className="w-52 rounded-lg border border-gray-300 px-5 py-4 text-lg"
             />
-            <button className="rounded-lg bg-blue-500 px-10 py-4 font-bold text-white">
-              검색
-            </button>
           </div>
         )}
 
@@ -116,6 +148,12 @@ function ProductListPage({ type, items }) {
             <ProductItem key={item.id} item={item} />
           ))}
         </div>
+
+        {filteredItems.length === 0 && (
+          <p className="text-center text-xl font-bold text-gray-700">
+            검색 결과가 없습니다.
+          </p>
+        )}
 
         <button className="mt-16 w-full rounded-lg border border-blue-300 py-5 text-xl font-bold text-gray-900 hover:bg-blue-50">
           장바구니 구매하기

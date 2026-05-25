@@ -1,5 +1,6 @@
+const BASE_URL = "http://192.168.166.239:8080";
 import { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
 
 function AdminPage() {
   const [name, setName] = useState("");
@@ -16,17 +17,77 @@ function AdminPage() {
     opacity: 1,
   };
 
-  const handleRegister = () => {
-    console.log(`${name} ${quantity} ${price} ${category}가 등록되었습니다.`);
-  };
+  const handleRegister = async () => {
+  const response = await fetch(`${BASE_URL}/products`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      stockQuantity: Number(quantity),
+      price: Number(price),
+    }),
+  });
 
-  const handleAddStock = () => {
-    console.log(`${stockName} ${stockQuantity}가 추가되었습니다.`);
-  };
+  console.log("등록 응답 상태:", response.status);
 
-  const handleDelete = () => {
-    console.log(`${deleteName}가 삭제되었습니다.`);
-  };
+  const data = await response.json();
+  console.log("등록 결과:", data);
+};
+
+  const handleAddStock = async () => {
+  // 1. 상품명으로 상품 조회
+  const searchResponse = await fetch(
+    `${BASE_URL}/products?name=${encodeURIComponent(stockName)}`
+  );
+
+  const product = await searchResponse.json();
+  console.log("조회된 상품:", product);
+
+  // 2. 조회된 상품의 id 사용해서 재고 추가
+  const response = await fetch(`${BASE_URL}/products/${product.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      addQuantity: Number(stockQuantity),
+    }),
+  });
+
+  console.log("응답 상태:", response.status);
+
+  const data = await response.json();
+  console.log("재고 추가 결과:", data);
+};
+  const handleDelete = async () => {
+  // 1. 상품명으로 조회
+  const searchResponse = await fetch(
+    `${BASE_URL}/products?name=${encodeURIComponent(deleteName)}`
+  );
+
+  const product = await searchResponse.json();
+
+  console.log("삭제할 상품:", product);
+
+  // 2. 조회된 상품 id로 삭제
+  const response = await fetch(`${BASE_URL}/products`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      productIds: [product.id],
+    }),
+  });
+
+  console.log("삭제 응답 상태:", response.status);
+
+  const data = await response.json();
+
+  console.log("삭제 결과:", data);
+};
 
   return (
     <div className="min-h-screen bg-white px-12 py-8 text-black">
